@@ -12,8 +12,10 @@ public class Renderer{
 
 public PVector trace(Ray ray, int depth){
     Intersection intersection = cena.intersects(ray);
+    
     if(intersection.hit)
       return new PVector(1, 1, 1);
+    
     return new PVector(0, 0, 0);
   }
  
@@ -40,8 +42,7 @@ public PVector trace(Ray ray, int depth){
        float totalWeight = 0;
        
        for(int k = 0; k < options.cameraSamples; k++){
-         
-         PVector sample = PVector.mult(samples.get(k).sub(new PVector(0.5, 0.5)), options.filterWidth);
+         PVector sample = PVector.sub(samples.get(k), new PVector(0.5, 0.5)).mult(options.filterWidth);
          Ray ray = camera.generateRay(i, j, sample);
          float weight = gauss2D(sample, options.filterWidth);
          
@@ -50,7 +51,10 @@ public PVector trace(Ray ray, int depth){
          
        }
        pVector.div(totalWeight);
-       pImage.set(i, j, (int)saturate(exposure(gamma(pVector, options.gamma), options.exposure)) * 255);
+       pVector = saturate(exposure(gamma(pVector, options.gamma), options.exposure)).mult(255);
+       
+       
+       pImage.set(i, j, color(pVector.x,pVector.y,pVector.z));
      }
    }
     return pImage;

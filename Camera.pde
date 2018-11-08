@@ -36,8 +36,8 @@ public class Camera{
         
      PVector pixel = new PVector();
         
-     pixel.x = (2.0 * (x + 0.5 + sample.x) / film.width - 1.0) * scale * film.aspectRatio();
-     pixel.y = (1.0 - 2.0 * (y + 0.5 + sample.y) / film.height) * scale;
+     pixel.x = (2.0 * (x + 0.5 + sample.x) / film.largura - 1.0) * scale * film.aspectRatio();
+     pixel.y = (1.0 - 2.0 * (y + 0.5 + sample.y) / film.altura) * scale;
      pixel.z = -1.0;
         
      worldMatrix.mult(pixel, pixel);

@@ -1,11 +1,11 @@
- public ArrayList<PVector> stratifiedSample(int samples){
+ ArrayList<PVector> stratifiedSample(int samples){
    int size = (int)sqrt(samples);
    ArrayList<PVector> points = new ArrayList<PVector>(samples);
    
    for(int i = 0; i < size; i++){
      for(int j = 0; j < size; j++){
        PVector offset = new PVector(i, j);
-       points.set(i * size + j, PVector.div(PVector.add(offset, uniform_random_2D()),size));
+       points.add(PVector.add(uniform_random_2D(),offset).div(size));
      }
    }
    return points;
@@ -25,8 +25,8 @@
                        pVector.z * power);
   }
   
-  public float saturate(PVector n){
-    return log(n.dot(n)/ n.y)/log(2);
+  public PVector saturate(PVector n){
+    return new PVector(constrain(n.x,0,1),constrain(n.y,0,1),constrain(n.z,0,1));
   }
   
   public PVector uniform_random_2D(){
@@ -35,7 +35,7 @@
   
   public float gauss1D(float n, float width){
     float r = width/2;
-    return max( exp(-1 * n * n) - exp(-1 * r * r) , 0);
+    return max(0, exp(-1 * n * n) - exp(-1 * r * r));
   }
   
   public float gauss2D(PVector pVector, float width){

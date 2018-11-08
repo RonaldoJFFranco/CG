@@ -3,7 +3,7 @@ public class Sphere extends Shape{
    public float radius;
    
    public Sphere(){}
-   public Sphere(PVector position, float radius) {
+   public Sphere(PVector position, float radius, BSDF bsdf, boolean explicitLight, PVector emission) {
      this.position = position;
      this.radius = radius;
    }
@@ -15,12 +15,18 @@ public class Sphere extends Shape{
      
      PVector L = PVector.sub(position, ray.origin); // L = C - O
      float tm = L.dot(ray.direction); // tm = L ∙ D
-     float d = sqrt(L.dot(L) -  tm * tm); // d = √(L ∙ L - tm²)
-     float deltaT = sqrt(radius * radius - d * d); // Δt = √(r² - d²)
      
-     if(tm < 0 || d > radius)
+     if (tm < 0) {
+       return i;
+     }
+     
+     float d = sqrt(L.dot(L) -  tm * tm); // d = √(L ∙ L - tm²)
+     
+     if(d > radius)
        return i;
      else{
+       float deltaT = sqrt(radius * radius - d * d); // Δt = √(r² - d²)
+       
        i.hit = true;
        i.distance = tm - deltaT;
        return i;
